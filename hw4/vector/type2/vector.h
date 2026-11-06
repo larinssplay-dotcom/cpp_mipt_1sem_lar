@@ -8,12 +8,19 @@ class vector {
     double* elem;    // указатель на элементы
 public:
     vector();                                       // конструктор по умолчанию
+
     explicit vector(int s);                         // конструктор с размером
+
     vector(std::initializer_list<double> lst);      // конструктор из списка
+
     vector(const vector& arg);                      // копирующий конструктор
+
     vector& operator=(const vector& a);             // копирующее присваивание
+
     vector(vector&& a);                             // перемещающий конструктор
+
     vector& operator=(vector&& a);                  // перемещающее присваивание
+    
     ~vector();                                      // деструктор
 
     int size() const;
