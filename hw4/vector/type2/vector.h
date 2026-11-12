@@ -20,12 +20,13 @@ public:
     vector(vector&& a);                             // перемещающий конструктор
 
     vector& operator=(vector&& a);                  // перемещающее присваивание
-    
+
     ~vector();                                      // деструктор
 
     int size() const;
 
     double& operator[](int n);                      // неконстантный доступ
+    
     const double& operator[](int n) const;          // константный доступ
 };
 

@@ -1,60 +1,61 @@
-#include "vector.h"
+#include "vector1.h"
 #include <iostream>
-#include <string>
-
-template<typename T>
-void print(const std::string& label, const vector<T>& v)
-{
-    std::cout << label << " (size=" << v.size()
-              << ", capacity=" << v.capacity() << "): ";
-    for (int i = 0; i < v.size(); ++i)
-        std::cout << v[i] << ' ';
-    std::cout << '\n';
-}
+#include <utility>
 
 int main()
 {
-    try {
-        // 1. vector<int> и push_back
-        vector<int> vi;
-        for (int i = 0; i < 10; ++i)
-            vi.push_back(i * i);
-        print("vi", vi);
+    // 1. Инициализация списком
+    vector<double> v1 = {1.2, 7.89, 12.34};
+    std::cout << "v1 (size=" << v1.size()
+              << ", capacity=" << v1.capacity() << "): ";
+    for (int i = 0; i < v1.size(); ++i)
+        std::cout << v1[i] << ' ';
+    std::cout << std::endl;
 
-        // 2. vector<std::string> из списка инициализации
-        vector<std::string> vs = {"alpha", "beta", "gamma"};
-        print("vs", vs);
+    // 2. Копирующий конструктор
+    vector<double> v2 = v1;
+    std::cout << "v2 (copy of v1, size=" << v2.size()
+              << ", capacity=" << v2.capacity() << "): ";
+    for (int i = 0; i < v2.size(); ++i)
+        std::cout << v2[i] << ' ';
+    std::cout << std::endl;
 
-        // 3. resize с значением по умолчанию
-        vs.resize(5, "?");
-        print("vs after resize(5, \"?\")", vs);
+    // 3. Копирующее присваивание
+    vector<double> v3;
+    v3 = v1;
+    std::cout << "v3 (assigned from v1, size=" << v3.size()
+              << ", capacity=" << v3.capacity() << "): ";
+    for (int i = 0; i < v3.size(); ++i)
+        std::cout << v3[i] << ' ';
+    std::cout << std::endl;
 
-        // 4. reserve
-        vi.reserve(100);
-        print("vi after reserve(100)", vi);
+    // 4. Перемещающий конструктор
+    vector<double> v4 = std::move(v1);
+    std::cout << "v4 (moved from v1, size=" << v4.size()
+              << ", capacity=" << v4.capacity() << "): ";
+    for (int i = 0; i < v4.size(); ++i)
+        std::cout << v4[i] << ' ';
+    std::cout << std::endl;
+    std::cout << "v1 after move: size = " << v1.size()
+              << ", capacity = " << v1.capacity() << std::endl;
 
-        // 5. Копирование
-        vector<int> vi2 = vi;
-        print("vi2 (copy of vi)", vi2);
+    // 5. Перемещающее присваивание
+    vector<double> v5;
+    v5 = std::move(v4);
+    std::cout << "v5 (moved from v4, size=" << v5.size()
+              << ", capacity=" << v5.capacity() << "): ";
+    for (int i = 0; i < v5.size(); ++i)
+        std::cout << v5[i] << ' ';
+    std::cout << std::endl;
+    std::cout << "v4 after move: size = " << v4.size()
+              << ", capacity = " << v4.capacity() << std::endl;
 
-        // 6. at() в пределах диапазона
-        std::cout << "vi.at(3) = " << vi.at(3) << '\n';
-
-        // 7. at() с выходом за границы — ожидаем исключение
-        std::cout << "vi.at(100) = " << vi.at(100) << '\n'; // сюда не дойдём
-    }
-    catch (const std::out_of_range& e) {
-        std::cerr << "Перехвачено std::out_of_range: " << e.what() << '\n';
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Перехвачено std::exception: " << e.what() << '\n';
-    }
-
-    // 8. Перемещение
-    vector<double> vd = {1.1, 2.2, 3.3};
-    vector<double> vd2 = std::move(vd);
-    print("vd2 (moved from vd)", vd2);
-    std::cout << "vd.size() after move = " << vd.size() << '\n';
+    // 6. Изменение элемента через operator[]
+    v5[0] = 100.0;
+    std::cout << "v5 after v5[0] = 100.0: ";
+    for (int i = 0; i < v5.size(); ++i)
+        std::cout << v5[i] << ' ';
+    std::cout << std::endl;
 
     return 0;
 }
