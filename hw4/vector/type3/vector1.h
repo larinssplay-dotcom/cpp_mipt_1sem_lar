@@ -1,3 +1,7 @@
+#ifndef VECTOR1_H 
+#define VECTOR1_H
+
+
 #include <memory>
 #include <algorithm>
 #include <initializer_list>
@@ -5,7 +9,7 @@
 #include <iostream>
 
 // Версия вектора с использованием аллокаторов глава 19
-// Стандартный алокатор, чек документацию
+// Стандартный алокатор, чек доки
 template<typename T, typename A = std::allocator<T>>
 class vector {
     A alloc;          // распределитель памяти
@@ -77,7 +81,7 @@ template<typename T, typename A>
 vector<T,A>::vector(const vector& arg)
     : sz{arg.sz}, elem{alloc.allocate(arg.sz)}, space{arg.sz}
 {
-    std::copy(arg.elem, arg.elem + arg.sz, elem);
+    std::uninitialized_copy(arg.elem, arg.elem + arg.sz, elem);
 }
 
 template<typename T, typename A>
@@ -87,7 +91,7 @@ vector<T,A>& vector<T,A>::operator=(const vector& a)
         return *this;
 
     T* p = alloc.allocate(a.sz);
-    std::copy(a.elem, a.elem + a.sz, p);
+    std::uninitialized_copy(a.elem, a.elem + a.sz, p);
 
     for (int i = 0; i < sz; ++i)
         alloc.destroy(&elem[i]);
@@ -219,3 +223,5 @@ void vector<T,A>::push_back(const T& d)
     alloc.construct(&elem[sz], d);         // копируем d в конец
     ++sz;
 }
+
+#endif
