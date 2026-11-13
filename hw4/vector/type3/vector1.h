@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include <iostream>
 
-// Версия вектора с использованием аллокаторов (глава 19)
+// Версия вектора с использованием аллокаторов глава 19
+// Стандартный алокатор, чек документацию
 template<typename T, typename A = std::allocator<T>>
 class vector {
     A alloc;          // распределитель памяти
@@ -32,7 +33,7 @@ public:
     T& operator[](int n);
     const T& operator[](int n) const;
 
-    T& at(int n);                    // с проверкой диапазона
+    T& at(int n);                    // с проверкой рэнджа
     const T& at(int n) const;
 
     // --- Размеры и ёмкость ---
@@ -57,18 +58,19 @@ template<typename T, typename A>
 vector<T,A>::vector(int s)
     : sz{s}, elem{alloc.allocate(s)}, space{s}
 {
-    // инициализируем элементы значением по умолчанию
+    // инициализируем элементы знач по умолчанию
     for (int i = 0; i < sz; ++i)
         alloc.construct(&elem[i], T());
 }
 
+// Конструктор из initializer_listпамять через аллокатор.
 template<typename T, typename A>
 vector<T,A>::vector(std::initializer_list<T> lst)
-    : sz{static_cast<int>(lst.size())},
+    : sz(lst.size()),
       elem{alloc.allocate(lst.size())},
       space{sz}
 {
-    std::copy(lst.begin(), lst.end(), elem);
+    std::uninitialized_copy(lst.begin(), lst.end(), elem);
 }
 
 template<typename T, typename A>
@@ -146,7 +148,7 @@ const T& vector<T,A>::operator[](int n) const
     return elem[n];
 }
 
-template<typename T, typename A>
+template<typename T, typename A> //с проверкой на рендж и исключениями
 T& vector<T,A>::at(int n)
 {
     if (n < 0 || sz <= n)
