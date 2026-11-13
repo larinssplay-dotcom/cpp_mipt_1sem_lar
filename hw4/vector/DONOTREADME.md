@@ -709,17 +709,7 @@ v.at(2) = 100;                 // OK
 
 Оставлены только комментарии про:
 
-новый параметр A и alloc.allocate/deallocate;
 
-AT::construct / AT::destroy вместо устаревших alloc.construct/destroy;
-
-uninitialized_copy вместо copy;
-
-разделение «destroy → deallocate» в деструкторе, reserve, resize, перемещающем присваивании;
-
-construct в push_back вместо присваивания;
-
-copy-and-swap в копирующем присваивании (появилось в главе 19).
 
 
 
